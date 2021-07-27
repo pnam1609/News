@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script>
+    if(localStorage.getItem('admin') != null){
+        location.href ='http://127.0.0.1:5500/layout/admin.html'
+    }else if(localStorage.getItem('dataUser') != null){
+      location.href ='http://127.0.0.1:5500/layout/home.html'
+    }
+</script>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in</title>
+  <link rel="stylesheet" href="../assets/css/validate.css">
+  <link rel="stylesheet" href="../assets/font/fontawesome-free-5.15.2-web/css/all.min.css">
+</head>
+
+<body>
+
+
+  <div class="main">
+    <form action="" method="POST" class="form" id="form-1">
+      <a class="icon-home" href="http://127.0.0.1:5500/layout/home.html">
+        <i class="fas fa-running"></i>
+      </a>
+      <h3 class="heading">Đăng nhập</h3>
+      <p class="desc margin-bottom">Đưa thể thao đến gần bạn hơn</p>
+
+
+      <!-- <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" name="email" type="text" placeholder="Nhập email của bạn" class="form-control">
+        <span class="form-message"></span>
+      </div> -->
+
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" name="username" type="text" placeholder="Username" class="form-control">
+        <span class="form-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control">
+        <span class="form-message"></span>
+      </div>
+      <span class="form-message"></span>
+      <button class="form-submit">Đăng Nhập</button>
+      <div class="form-notify"></div>
+      <div class="switch-signin-signup">
+        Bạn chưa có tài khoản?
+        <a href="http://127.0.0.1:5500/layout/register.html" class="switch">Đăng ký</a>
+      </div>
+    </form>
+  </div>
+
+  <script src="/assets/js/validator.js"></script>
+
+  <!-- <script src="/assets/js/login.js"></script> -->
+
+  <script>
+    Validator({
+      form: '#form-1',
+      formGroupSelector: '.form-group',
+      errorSelector: '.form-message',
+      rules: [
+        Validator.isUsername('#username'),
+        Validator.minLength('#password', 5),
+      ],
+      onSubmit: function (dataLogin) {
+        // Call API
+        fetch(`http://www.sports.somee.com/api/Users?username=${dataLogin.username}&password=${dataLogin.password}`)
+          .then(res => {
+            return res.json();
+          })
+          .then(data => {
+            var formNotifyElement = document.querySelector('.form-notify')
+            if (data.result == -2 || data.result == -3) {
+              formNotifyElement.innerHTML = data.message
+            } else {
+              
+              if (data.username == 'admin') {
+                localStorage.setItem('admin', JSON.stringify(data));
+                if(localStorage.getItem('currentLink')!=null){
+                  location.href = localStorage.getItem('currentLink');
+                }else{
+                  location.href = "http://127.0.0.1:5500/layout/admin.html";
+                }
+                //location.href ='http://127.0.0.1:5500/layout/admin.html';
+                
+              }else{
+                localStorage.setItem('dataUser', JSON.stringify(data));
+                //window.location.href = "http://127.0.0.1:5500/layout/detailArticle.html";
+                //location.href = localStorage.getItem('currentLink');
+
+                if(localStorage.getItem('currentLink')!=null){
+                  location.href = localStorage.getItem('currentLink');
+                }else{
+                  location.href = "http://127.0.0.1:5500/layout/home.html";
+                }
+              }
+            }
+          })
+          .catch(function () {
+            console.log('Lỗi đăng nhập')
+          })
+      }
+    });
+
+
+  </script>
+
+</body>
+
+</html>

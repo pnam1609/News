@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    var localStorageData = localStorage.getItem('dataUser')
+    if (localStorageData == null)
+        location.href = 'http://127.0.0.1:5500/layout/login.html'
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/editProfile.css">
+    <link rel="stylesheet" href="../assets/css/validate.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="../assets/font/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" />
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+        </script>
+
+    <script>
+        $(function () {
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="grid">
+        <div class="container">
+            <div class="user">
+                <div class="icon-user">
+                    <img src="../assets/img/avatar_default.jpg" class="img__icon-user">
+                </div>
+                <div class="name-user"></div>
+                <hr>
+            </div>
+            <div class="user-item">
+                <div class="header-edit-profile">
+                    <div class="back-edit-profile"><i class="fas fa-chevron-left mr-15"></i> Back</div>
+                    <div class="title-edit-profile">Sửa thông tin cá nhân</div>
+                </div>
+                <form action="" method="POST" class="form" id="form-1" style="width: 100%;">
+
+                    <div class="spacer"></div>
+
+                    <div class="form-group">
+                        <label for="name" class="form-label">Tên đầy đủ</label>
+                        <input id="name" name="name" type="text" placeholder="VD: Nguyễn Văn A" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" name="email" type="text" placeholder="VD: email@domain.com"
+                            class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sdt" class="form-label">Phone Number</label>
+                        <input id="sdt" name="sdt" type="text" placeholder="VD: 0946748564" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <button class="form-submit">Sửa</button>
+                    <div class="form-notify"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script src="../assets/js/editProfile.js"></script>
+
+
+    <script>
+        var dataUser = JSON.parse(localStorageData.toString())
+        document.querySelector('.name-user').innerHTML = dataUser.name
+
+        document.querySelector('#email').value = dataUser.email
+        document.querySelector('#name').value = dataUser.name
+        document.querySelector('#sdt').value = dataUser.sdt
+
+        document.querySelector('.back-edit-profile').onclick = () => {
+            Swal.fire({
+                title: 'Do you want exit?',
+                showCancelButton: true,
+                confirmButtonText: `Exit`
+            })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = 'http://127.0.0.1:5500/layout/home.html'
+                    }
+                })
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            Validator({
+                form: '#form-1',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#name', 'Vui lòng nhập tên đầy đủ của bạn'),
+                    Validator.isEmail('#email'),
+                    Validator.isPhoneNumber('#sdt')
+                ],
+                onSubmit: function (data) {
+                    dataUser.email = data.email
+                    dataUser.name = data.name
+                    dataUser.sdt = data.sdt
+                    var option = {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                            // 'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: JSON.stringify(dataUser)
+                    }
+                    //Call Api
+                    async function postData(url = '') {
+                        const response = await fetch(url, option);
+                        return response.json();
+                    }
+
+                    postData('http://www.sports.somee.com/api/Users')
+                        .then(dataRes => {
+                            console.log(dataRes)
+                            localStorage.removeItem('dataUser')
+                            localStorage.setItem('dataUser', JSON.stringify(dataUser))
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sửa thông tin User thành công',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+
+                            setTimeout(() => {
+                                location.href = 'http://127.0.0.1:5500/layout/home.html'
+                            }, 2000)
+
+                        });
+                }
+            })
+        })
+    </script>
+
+    <script src="../assets/js/validator.js"></script>
+
+    <script src="./../node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+</body>
+
+</html>

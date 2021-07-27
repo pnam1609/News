@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    if (localStorage.getItem('dataUser') != null) {
+        location.href = 'http://127.0.0.1:5500/layout/category.html'
+    }
+    if (localStorage.getItem('admin') == null) {
+        location.href = 'http://127.0.0.1:5500/layout/login.html'
+    }
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/category.css">
+
+    <link rel="stylesheet" href="../assets/css/validate.css">
+
+    <link rel="stylesheet" href="../assets/lib/simplepicker.css">
+
+    <link rel="stylesheet" href="./../node_modules/sweetalert2/dist/sweetalert2.min.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="../assets/font/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" />
+    <title>Admin</title>
+</head>
+
+<body>
+    <div class="container">
+        <ul class="category">
+            <a href="http://127.0.0.1:5500/layout/home.html" class="link-homepage">
+                <li class="icon-home">
+                    <p class="center">NEWSPORTS</p>
+                </li>
+            </a>
+            <li class="category__item article">
+                <i class="fas fa-file-alt item_inside mgl-10"></i>
+                <div class="item_inside">Article</div>
+            </li>
+            <li class="category__item category-item">
+                <i class="fas fa-align-justify item_inside mgl-10"></i>
+                <div class="item_inside">Category</div>
+            </li>
+            <li class="category__item user">
+                <i class="fas fa-user item_inside mgl-10"></i>
+                <div class="item_inside">User</div>
+            </li>
+        </ul>
+        <div class="admin">
+            <header class="header">
+                <nav class="navbar">
+                    <input type="text" placeholder="Search" class="box-search">
+                    <ul class="navbar-listIcon append-icon">
+                        <div class="navbar__icon-url login"></div>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="manage display__get__article active_admin">
+                <div class="form-group" style="flex-direction: row;">
+                    <div class="search-group">
+                        <input id="search" name="search" type="text" placeholder="Nhập từ khóa..." class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">
+                                <span class="fa fa-search mr-5"></span>Tìm
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="create" onclick="createArticle()">Create</div>
+                <div class="manage__item list_article"></div>
+            </div>
+
+
+
+            <div class="manage display__create__article">
+                <div class="header__add-article">
+                    <i class="fas fa-chevron-left header__add-article__item icon-back__header"
+                        onclick="getBackArticle()">Back</i>
+
+                    <span class="header__add-article__item">Thêm Bài Báo</span>
+                </div>
+                <form action="" method="post" class="form" id="form-1" style="width: calc(100% - 48px);">
+                    <div class="form-group">
+                        <label for="nameArticle" class="form-label">Tên Bài báo</label>
+                        <input id="nameArticle" name="nameArticle" type="text" placeholder="Tên Bài báo"
+                            onchange="console.log()" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <!-- <div class="search-group">
+                        <input id="search" name="search" type="text" placeholder="Nhập từ khóa..." class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">
+                                <span class="fa fa-search mr-5"></span>Tìm
+                            </button>
+                        </span>
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="author" class="form-label">Author</label>
+                        <input id="author" name="author" type="text" placeholder="Author" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+
+                    
+
+                    <div class="form-group">
+                        <label for="id_category" class="form-label">Danh Mục</label>
+                        <div id="id_category" name="id_category" type="text" class="form-control"
+                            style="display: flex;position: relative;" onclick="displayContenDrop()">
+                            <div class="display__category" id="display__category"></div>
+                            <div class="icon_dropdown">
+                                <i class="fas fa-caret-down" style="font-size: 2.2rem;"></i>
+                            </div>
+                            <div class="dropdown-content"></div>
+                        </div>
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img" class="form-label">Ảnh</label>
+                        <input id="img" name="img" type="file" onchange="console.log(this.value) 
+                            console.log(this.files[0])" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="datetime_article" class="form-label">Thời gian</label>
+                        <div class="form-control" id="datetime_article"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contentArticle" class="form-label">Nội dung bài báo</label>
+                        <textarea placeholder="Nội dung bài báo" name="contentArticle" id="contentArticle" cols="30"
+                            rows="10" class="form-control" style="height: 350px;"></textarea>
+                        <span class="form-message"></span>
+                    </div>
+
+                    <!-- Thẻ img để làm sau-->
+
+                    <div class="form-group">
+                        <label for="desciption" class="form-label">Mô tả</label>
+                        <input id="desciption" name="desciption" type="text" placeholder="Mô tả" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+
+                    <button class="form-submit">Submit</button>
+
+                    <div class="form-notify"></div>
+                </form>
+            </div>
+
+
+            <div class="manage display__edit__article">
+                <div class="header__add-article">
+                    <i class="fas fa-chevron-left header__add-article__item icon-back__header"
+                        onclick="getBackArticle()">Back</i>
+                    <span class="header__add-article__item">Sửa Bài Báo</span>
+                </div>
+                <form action="" method="post" class="form" id="form-2" style="width: calc(100% - 48px);">
+                    <div class="form-group">
+                        <label for="id_article" class="form-label">Id Bài báo</label>
+                        <input id="id_article" name="id_article" type="text" class="form-control" readonly>
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nameArticle" class="form-label">Tên Bài báo</label>
+                        <input id="nameArticle1" name="nameArticle" type="text" placeholder="Tên Bài báo"
+                            class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author" class="form-label">Author</label>
+                        <input id="author1" name="author" type="text" placeholder="Author" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_category" class="form-label">Danh Mục</label>
+                        <div id="id_category1" name="id_category" type="text" class="form-control"
+                            style="display: flex;position: relative;" onclick="displayContenDrop()">
+                            <div class="display__category" id="display__category1"></div>
+                            <div class="icon_dropdown">
+                                <i class="fas fa-caret-down" style="font-size: 2.2rem;"></i>
+                            </div>
+                            <div class="dropdown-content"></div>
+                        </div>
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img" class="form-label">Ảnh</label>
+                        <input id="img1" name="img" type="file" class="form-control"
+                            onchange="changeImgEdit(this.value)">
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="datetime_article" class="form-label">Thời gian</label>
+                        <div class="form-control" id="datetime_article1"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contentArticle" class="form-label">Nội dung bài báo</label>
+                        <textarea placeholder="Nội dung bài báo" name="contentArticle" id="contentArticle1" cols="30"
+                            rows="10" class="form-control" style="height: 350px;"></textarea>
+                        <span class="form-message"></span>
+                    </div>
+
+                    <!-- Thẻ img để làm sau-->
+
+                    <div class="form-group">
+                        <label for="desciption" class="form-label">Mô tả</label>
+                        <input id="desciption1" name="desciption" type="text" placeholder="Mô tả" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <button class="form-submit">Submit</button>
+
+                    <div class="form-notify notify-edit"></div>
+                </form>
+            </div>
+
+
+            <div class="manage display__create__category">
+                <div class="header__add-article">
+                    <i class="fas fa-chevron-left header__add-article__item icon-back__header"
+                        onclick="getBackCategory()">Back</i>
+                    <span class="header__add-article__item">Thêm Danh Mục</span>
+                </div>
+                <form action="" method="post" class="form" id="form-3" style="width: calc(100% - 48px);">
+                    <div class="form-group">
+                        <label for="name_category" class="form-label">Tên danh mục</label>
+                        <input id="name_category" name="name_category" type="text" placeholder="Tên danh mục"
+                            class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <button class="form-submit">Submit</button>
+                </form>
+            </div>
+
+
+            <div class="manage display__edit__category">
+                <div class="header__add-article">
+                    <i class="fas fa-chevron-left header__add-article__item icon-back__header"
+                        onclick="getBackCategory()">Back</i>
+                    <span class="header__add-article__item">Sửa Danh Mục</span>
+                </div>
+                <form action="" method="post" class="form" id="form-4" style="width: calc(100% - 48px);">
+                    <div class="form-group">
+                        <label for="id_category" class="form-label">Id danh mục</label>
+                        <input id="id_category_edit_category" name="id_category" type="text" class="form-control"
+                            readonly>
+                        <!-- readonly -->
+                        <span class="form-message"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name_category" class="form-label">Tên danh mục</label>
+                        <input id="name_category_edit_category" name="name_category" type="text"
+                            placeholder="Tên danh mục" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <button class="form-submit">Submit</button>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+    <script>
+
+
+        var appendIcon = document.querySelector('.append-icon')
+        var name_user = document.querySelector('.name-user')
+
+
+        var localStorageData = localStorage.getItem('admin')
+
+        if (localStorageData != null) {
+            var dataUser = JSON.parse(localStorageData)
+        }
+        var elementCreate = document.querySelector('.login');
+        //console.log(elementCreate)
+
+        //load lại các icon khi check local storage
+        if (localStorageData != null) {
+            elementCreate.innerHTML = `<i class="fas fa-sign-out-alt navbar__icon"></i><div class="name-user">${dataUser.name}</div>`
+        } else {
+            elementCreate.innerHTML = `<i class="fas fa-user navbar__icon"></i>`
+        }
+
+        // khi click vào nút đăng nhập và đăng xuất
+        elementCreate.onclick = () => {
+            if (localStorageData != null) {
+                elementCreate.innerHTML = `<i class="fas fa-user navbar__icon"></i>`
+                //xóa local storage
+                localStorage.removeItem('admin')
+
+
+                //trả các giá trị biến về null sau khi xóa local storage
+                dataUser = null;
+                localStorageData = null
+                location.href = 'http://127.0.0.1:5500/layout/login.html'
+            } else {
+                location.href = 'http://127.0.0.1:5500/layout/login.html'
+            }
+        }
+
+    </script>
+
+    <script src="../assets/js/admin.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js">
+    </script>
+
+    <script src="../assets/js/validator.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mong muốn của chúng ta
+            Validator({
+                form: '#form-1',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#nameArticle', 'Vui lòng nhập tên bài báo'),
+                    Validator.isRequired('#author', 'Vui lòng nhập tên tác giả'),
+                    Validator.isRequired('#contentArticle', 'Vui lòng nhập nội dung bài báo'),
+                    Validator.isRequired('#desciption', 'Vui lòng nhập mô tả của bài báo'),
+                    Validator.isRequired('#img', 'Vui lòng thêm ảnh')
+
+                ],
+                onSubmit: async function (data) {
+                    $('.form-notify').innerHTML = `<div class="loader"></div>`
+
+                    data.contentArticle = data.contentArticle.replaceAll('\n', "|")
+                    data.datetime_article = $('#datetime_article').innerHTML
+
+                    const list_category = await getListCategory()
+
+                    //lấy ra tên danh mục hiển thị trên giao diện để filter chọn ra id_category
+                    var name_categorySelect = $('#display__category').innerHTML
+                    console.log(name_categorySelect)
+
+                    const categorySelect = list_category.filter(value => {
+                        if (value.name_category == name_categorySelect) return value
+                    })
+                    console.log(categorySelect)
+                    data.id_category = categorySelect[0].id_category
+
+                    data.views = 0
+                    //console.log(JSON.stringify(data))
+                    //display cetegory để lấy thẻ ra để inner html vào
+                    var display__category_name = document.querySelector('.display__category')
+                    data.name_category = display__category_name.innerHTML
+                    // chuyển data về dataRegister vì object data dư trường password confirm
+
+
+                    // lấy ra thẻ img
+                    var fileElement = $('#img').files[0];
+                    const resFile = await toBase64(fileElement)
+                    data.img = resFile
+
+                    var option = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                            // 'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: JSON.stringify(data)
+                    }
+
+
+                    async function postData(url = '') {//,data  xóa nhưng chưa kiểm lại
+                        const response = await fetch(url, option);
+                        return response.json();
+                    }
+
+                    postData('http://www.sports.somee.com/api/Articles', data)
+                        .then(dataRes => {
+
+                            if (dataRes.result == 1) {
+
+                                $('.form-notify').innerHTML = ""
+                                $('.active_admin').classList.remove('active_admin')
+                                $('.display__get__article').classList.add('active_admin')
+                                $('.simplepicker-wrapper').remove()
+                                localStorage.removeItem('id_category_dropDown')
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thêm bài báo thành công',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                })
+
+                                getArticle()
+                                    .then(list_article => {
+                                        renderArticle(list_article)
+                                    })
+                            } else {
+                                // $('.form-notify').innerHTML = dataRes.message
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: `${dataRes.message}! Không thể thêm bài báo`
+                                })
+                                $('.form-notify').innerHTML = ""
+                                // await setTimeout(() => {
+
+                                // }, 1500)
+                            }
+
+                        });
+                    // lấy ra thời gian từ biến get time được lấy ra từ picker
+                    //data.datetime_article = getTime
+
+
+
+                    //var id_category_dropDown =  localStorage.getItem('id_category_dropDown')
+                    // console.log(localStorage.getItem('id_category_dropDown'))
+                    // if(localStorage.getItem('id_category_dropDown') != null){
+                    //     data.id_category = localStorage.getItem('id_category_dropDown')
+                    //     console.log(data.id_category)
+                    //     localStorage.removeItem('id_Article_edit')
+                    // }else{
+
+                    //     data.id_category = localStorage.getItem('id_Article_edit')
+                    //     console.log(data.id_category)
+                    // }
+
+
+                    //Call Api
+
+
+                }
+            });
+
+
+            Validator({
+                form: '#form-2',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#nameArticle1', 'Vui lòng nhập tên bài báo'),
+                    Validator.isRequired('#author1', 'Vui lòng nhập tên tác giả'),
+                    Validator.isRequired('#contentArticle1', 'Vui lòng nhập nội dung bài báo'),
+                    Validator.isRequired('#desciption1', 'Vui lòng nhập mô tả của bài báo'),
+                    // Validator.isRequired('#img1', 'Vui lòng thêm ảnh')
+
+                ],
+                onSubmit: async function (data) {
+
+                    $('.notify-edit').innerHTML = `<div class="loader"></div>`
+
+                    data.contentArticle = data.contentArticle.replaceAll('\n', "|")
+
+                    data.datetime_article = $('#datetime_article1').innerHTML
+
+
+                    const list_category = await getListCategory()
+
+                    //lấy ra tên danh mục hiển thị trên giao diện để filter chọn ra id_category
+                    var name_categorySelect = $('#display__category1').innerHTML
+                    console.log(name_categorySelect)
+
+                    const categorySelect = list_category.filter(value => {
+                        if (value.name_category == name_categorySelect) return value
+                    })
+                    console.log(categorySelect)
+
+                    data.id_category = categorySelect[0].id_category
+
+                    console.log($('#img1').value)
+                    console.log(changeImgEdit($('#img1').value))
+                    if (changeImgEdit($('#img1').value)) {
+                        console.log(222222222222222222)
+                        data.img = $('#img1').src
+                    } else {
+                        console.log(11111111111111111111)
+                        var fileElement = $('#img1').files[0];
+                        const resFile = await toBase64(fileElement)
+                        data.img = resFile
+                    }
+
+
+
+                    // var fileElement = $('#img1').files[0];
+
+                    // const resFile = await toBase64(fileElement)
+                    // data.img = resFile
+
+
+                    // Vì đây là thẻ div nên k thể lấy dữ liệu từ data như các thẻ input khác nên phải lấy dữ liệu từ thẻ thông qua innerhtml
+                    var display__category_name = document.querySelector('.display__category')
+                    data.name_category = display__category_name.innerHTML
+                    // chuyển data về dataRegister vì object data dư trường password confirm
+                    var option = {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                            // 'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    //Call Api
+                    async function postData(url = '') {
+                        const response = await fetch(url, option);
+                        return response.json();
+                    }
+
+                    postData('http://www.sports.somee.com/api/Articles')
+                        .then(dataRes => {
+                            if (dataRes.result == 1) {
+                                // getCategory(renderCategory)
+                                console.log(dataRes)
+
+                                $('.form-notify').innerHTML = dataRes.message
+
+                                //  await setTimeout(() => {
+
+                                // }, 1000);
+
+                                $('.active_admin').classList.remove('active_admin')
+                                $('.display__get__article').classList.add('active_admin')
+
+                                localStorage.removeItem('id_category_dropDown')
+                                //animation
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Sửa bài báo thành công',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                })
+
+                                getArticle()
+                                    .then(list_article => {
+                                        renderArticle(list_article)
+                                    })
+                            } else {
+                                //animation
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: `${dataRes.message}! Không thể sửa bài báo`
+                                })
+                                $('.form-notify').innerHTML = ""
+                            }
+
+                        });
+
+                }
+            });
+
+            Validator({
+                form: '#form-3',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#name_category', 'Vui lòng nhập tên danh mục'),
+                ],
+                onSubmit: function (data) {
+
+
+
+                    var option = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                            // 'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    //Call Api
+                    async function postData(url = '') {
+                        const response = await fetch(url, option);
+                        return response.json();
+                    }
+
+                    postData('http://www.sports.somee.com/api/category', data)
+                        .then(dataRes => {
+                            console.log(dataRes)
+                            $('.active_admin').classList.remove('active_admin')
+                            $('.display__get__category').classList.add('active_admin')
+
+                            //getListCategory()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thêm danh mục thành công',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            getCategory(renderCategory)
+
+                        });
+                }
+            })
+
+
+            Validator({
+                form: '#form-4',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#name_category_edit_category', 'Vui lòng nhập tên danh mục'),
+                ],
+                onSubmit: function (data) {
+                    console.log(data)
+                    var option = {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                            // 'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    //Call Api
+                    async function postData(url = '') {
+                        const response = await fetch(url, option);
+                        return response.json();
+                    }
+
+                    postData('http://www.sports.somee.com/api/category', data)
+                        .then(dataRes => {
+                            console.log(dataRes)
+                            $('.active_admin').classList.remove('active_admin')
+                            $('.display__get__category').classList.add('active_admin')
+
+                            //getListCategory()
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sửa danh mục thành công',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            getCategory(renderCategory)
+
+                        });
+                }
+            })
+        });
+    </script>
+
+
+    <script src="../assets/dist/simplepicker.js"></script>
+
+    <script src="./../node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+</body>
+
+</html>

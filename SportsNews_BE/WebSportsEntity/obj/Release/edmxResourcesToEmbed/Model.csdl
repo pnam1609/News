@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebTheThaoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Article">
+    <Key>
+      <PropertyRef Name="id_article" />
+    </Key>
+    <Property Name="id_article" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nameArticle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="datetime_article" Type="DateTime" Precision="3" />
+    <Property Name="contentArticle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="desciption" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="img" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="views" Type="Int32" />
+    <Property Name="id_category" Type="Int32" />
+    <NavigationProperty Name="category" Relationship="Self.FK_Article_category" FromRole="Article" ToRole="category" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Article" FromRole="Article" ToRole="Comment" />
+  </EntityType>
+  <EntityType Name="category">
+    <Key>
+      <PropertyRef Name="id_category" />
+    </Key>
+    <Property Name="id_category" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name_category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Articles" Relationship="Self.FK_Article_category" FromRole="category" ToRole="Article" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="id_comment" />
+    </Key>
+    <Property Name="id_comment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="comment_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="id_user" Type="Int32" />
+    <Property Name="id_article" Type="Int32" />
+    <NavigationProperty Name="Article" Relationship="Self.FK_Comment_Article" FromRole="Comment" ToRole="Article" />
+    <NavigationProperty Name="user" Relationship="Self.FK_Comment_user" FromRole="Comment" ToRole="user" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id_user" />
+    </Key>
+    <Property Name="id_user" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="sdt" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_user" FromRole="user" ToRole="Comment" />
+  </EntityType>
+  <Association Name="FK_Article_category">
+    <End Role="category" Type="Self.category" Multiplicity="0..1" />
+    <End Role="Article" Type="Self.Article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="category">
+        <PropertyRef Name="id_category" />
+      </Principal>
+      <Dependent Role="Article">
+        <PropertyRef Name="id_category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_Article">
+    <End Role="Article" Type="Self.Article" Multiplicity="0..1" />
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Article">
+        <PropertyRef Name="id_article" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="id_article" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_user">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id_user" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="id_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WebTheThaoEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Articles" EntityType="Self.Article" />
+    <EntitySet Name="categories" EntityType="Self.category" />
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <AssociationSet Name="FK_Article_category" Association="Self.FK_Article_category">
+      <End Role="category" EntitySet="categories" />
+      <End Role="Article" EntitySet="Articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_Article" Association="Self.FK_Comment_Article">
+      <End Role="Article" EntitySet="Articles" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_user" Association="Self.FK_Comment_user">
+      <End Role="user" EntitySet="users" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_filter_cmt_article" ReturnType="Collection(WebTheThaoModel.sp_filter_cmt_article_Result)">
+      <Parameter Name="id_article" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_find_user_by_username" ReturnType="Collection(WebTheThaoModel.sp_find_user_by_username_Result)">
+      <Parameter Name="usernameFind" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_get_all_category_article" ReturnType="Collection(WebTheThaoModel.sp_get_all_category_article_Result)" />
+    <FunctionImport Name="sp_get_all_users" ReturnType="Collection(WebTheThaoModel.sp_get_all_users_Result)" />
+    <FunctionImport Name="sp_get_article_and_category" />
+    <FunctionImport Name="sp_get_article_by_category">
+      <Parameter Name="id_category" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_get_list_id_article_by_category">
+      <Parameter Name="id_category" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(WebTheThaoModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(WebTheThaoModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="sp_get_article_category" ReturnType="Collection(WebTheThaoModel.sp_get_article_category_Result)" />
+    <FunctionImport Name="sp_get_all_article_category" ReturnType="Collection(WebTheThaoModel.sp_get_all_article_category_Result)" />
+    <FunctionImport Name="sp_get_all_article_by_category" ReturnType="Collection(WebTheThaoModel.sp_get_all_article_by_category_Result)">
+      <Parameter Name="id_cate" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_filter_cmt_article_Result">
+    <Property Type="Int32" Name="id_comment" Nullable="false" />
+    <Property Type="String" Name="comment_content" Nullable="true" MaxLength="Max" />
+    <Property Type="Int32" Name="id_user" Nullable="true" />
+    <Property Type="Int32" Name="id_article" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_find_user_by_username_Result">
+    <Property Type="Int32" Name="id_user" Nullable="false" />
+    <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="password" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="name" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="sdt" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="email" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_get_all_category_article_Result">
+    <Property Type="Int32" Name="id_category" Nullable="false" />
+    <Property Type="String" Name="name_category" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_get_all_users_Result">
+    <Property Type="Int32" Name="id_user" Nullable="false" />
+    <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="password" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="name" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="sdt" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="email" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_get_article_category_Result">
+    <Property Type="Int32" Name="id_article" Nullable="false" />
+    <Property Type="String" Name="nameArticle" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="author" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="datetime_article" Nullable="true" Precision="23" />
+    <Property Type="String" Name="contentArticle" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="desciption" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="img" Nullable="true" MaxLength="Max" />
+    <Property Type="Int32" Name="views" Nullable="true" />
+    <Property Type="Int32" Name="id_category" Nullable="true" />
+    <Property Type="Int32" Name="id_category1" Nullable="false" />
+    <Property Type="String" Name="name_category" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_get_all_article_category_Result">
+    <Property Type="Int32" Name="id_article" Nullable="false" />
+    <Property Type="String" Name="nameArticle" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="author" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="datetime_article" Nullable="true" Precision="23" />
+    <Property Type="String" Name="contentArticle" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="desciption" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="img" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="name_category" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="id_category" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_get_all_article_by_category_Result">
+    <Property Type="Int32" Name="id_article" Nullable="false" />
+    <Property Type="String" Name="nameArticle" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="author" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="datetime_article" Nullable="true" Precision="23" />
+    <Property Type="String" Name="contentArticle" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="desciption" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="img" Nullable="true" MaxLength="Max" />
+    <Property Type="String" Name="name_category" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="id_category" Nullable="true" />
+  </ComplexType>
+</Schema>

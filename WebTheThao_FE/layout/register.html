@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="../assets/css/validate.css">
+  <link rel="stylesheet" href="../assets/font/fontawesome-free-5.15.2-web/css/all.min.css">
+</head>
+
+<body>
+  <div class="main">
+    <form action="" method="POST" class="form" id="form-1">
+      <a class="icon-home" href="http://127.0.0.1:5500/views/index.html">
+        <i class="fas fa-running"></i>
+      </a>
+      <h3 class="heading">Đăng ký thành viên</h3>
+  
+      <div class="spacer"></div>
+  
+  
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" name="username" type="text" placeholder="VD: nguyenvana" class="form-control">
+        <!-- message-exist để thông báo tài khoản tồn tại -->
+        <span class="form-message message-exist"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="name" class="form-label">Tên đầy đủ</label>
+        <input id="name" name="name" type="text" placeholder="VD: Nguyễn Văn A" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" name="email" type="text" placeholder="VD: email@domain.com" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="sdt" class="form-label">Phone Number</label>
+        <input id="sdt" name="sdt" type="text" placeholder="VD: 0946748564" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="password_confirmation" class="form-label">Nhập lại mật khẩu</label>
+        <input id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu" type="password"
+          class="form-control">
+        <span class="form-message"></span>
+      </div>
+      
+      <button class="form-submit">Đăng ký</button>
+      <div class="form-notify"></div>
+    </form>
+  </div>
+
+  <script src="/assets/js/validator.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Mong muốn của chúng ta
+      Validator({
+        form: '#form-1',
+        formGroupSelector: '.form-group',
+        errorSelector: '.form-message',
+        rules: [
+          Validator.isUsername('#username'),
+          Validator.isRequired('#name', 'Vui lòng nhập tên đầy đủ của bạn'),
+          Validator.isEmail('#email'),
+          Validator.isPhoneNumber('#sdt'),
+          Validator.minLength('#password', 5),
+          Validator.isRequired('#password_confirmation'),
+          Validator.isConfirmed('#password_confirmation', function () {
+            return document.querySelector('#form-1 #password').value;
+          }, 'Mật khẩu nhập lại không chính xác')
+        ],
+        onSubmit: function (data) {
+          // chuyển data về dataRegister vì object data dư trường password confirm
+          var option = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: JSON.stringify(data) 
+            }
+            //Call Api
+          async function postData(url = '') {//,data  xóa nhưng chưa kiểm lại
+            const response = await fetch(url,option );
+            return response.json(); 
+          }
+
+          postData('http://www.sports.somee.com/api/Users', data)
+            .then(dataRes => {
+
+              var notify = document.querySelector('.form-notify')
+              var messageExit = document.querySelector('.message-exist')
+
+              if(dataRes.result == 1){
+                messageExit.innerHTML = ''
+                notify.innerHTML = dataRes.message
+                setTimeout(function(){
+                  window.location.href = "http://127.0.0.1:5500/layout/login.html";
+                  }, 3000);
+              }else{
+                notify.innerHTML = ''
+                messageExit.innerHTML = dataRes.message
+              }
+            });
+
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

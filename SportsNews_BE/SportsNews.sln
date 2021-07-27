@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1433
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsNews", "SportsNews\SportsNews.csproj", "{45904FBD-D225-40D3-BC79-0E9A185F238E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSportsEntity", "WebSportsEntity\WebSportsEntity.csproj", "{F0A7C2D9-30FC-4962-BDC8-6697FF25EFCE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45904FBD-D225-40D3-BC79-0E9A185F238E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45904FBD-D225-40D3-BC79-0E9A185F238E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45904FBD-D225-40D3-BC79-0E9A185F238E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45904FBD-D225-40D3-BC79-0E9A185F238E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0A7C2D9-30FC-4962-BDC8-6697FF25EFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0A7C2D9-30FC-4962-BDC8-6697FF25EFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0A7C2D9-30FC-4962-BDC8-6697FF25EFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0A7C2D9-30FC-4962-BDC8-6697FF25EFCE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BED362BD-9D93-47B0-AD94-34000FDDDE82}
+	EndGlobalSection
+EndGlobal

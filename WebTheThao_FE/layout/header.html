@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/header.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="../assets/font/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" />
+</head>
+
+<body>
+    <header class="header">
+        <div class="grid">
+            <nav class="navbar">
+                <div class="form-group1" style="flex-direction: row;">
+
+                    <div class="search-group">
+                        <input id="search" name="search" type="text" placeholder="Nhập từ khóa..." class="form-control">
+
+                        <span class="input-group-btn">
+                            <button class="btn-search" type="button" onclick="searchArticle()">
+                                <i class="fa fa-search mr-5 icon-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <ul class="navbar-listIcon">
+                    <a href="http://127.0.0.1:5500/layout/home.html" class="navbar__icon-url">
+                        <i class="fas fa-home navbar__icon"></i>
+                    </a>
+                </ul>
+                <ul class="navbar-list"></ul>
+                <ul class="navbar-listIcon append-icon">
+                    <div class="navbar__icon-url navbar-icon__search" onclick="swithcSeatch()">
+                        <i class="fas fa-search navbar__icon"></i>
+                    </div>
+                    
+                    <div class="navbar__icon-url login" onclick="hideShowBoardUser()"></div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <script>
+        const $ = document.querySelector.bind(document)
+
+        var appendIcon = document.querySelector('.append-icon')
+        var elementCreate = document.querySelector('.login');
+
+        var localStorageData = localStorage.getItem('dataUser')
+        var localStorageAdmin = localStorage.getItem('admin')
+        if (localStorageData != null) {
+            console.log(localStorageData.toString())
+            var dataUser = JSON.parse(localStorageData.toString())
+            // lấy ra mỗi tên để hiển thị 
+            listNameSplit = dataUser.name.split(' ')
+            elementCreate.innerHTML = `<i class="fas fa-sign-out-alt navbar__icon"></i>
+            <div class="board-user">
+                    <div class="board-user1">
+                    <div class="board-user__item board__icon-user">
+                                <img src="./../assets/img/avatar1.jpg" class="img-user">
+                            </div>
+                            <div class="board-user__item">
+                                <div class="item-user">${listNameSplit[listNameSplit.length - 1]}</div>
+                                <a href="http://127.0.0.1:5500/layout/editprofile.html" class="view-profile"><div class="item-user view-profile">View profile</div><a/>
+                                <div class="item-user log-out">
+                                    <i class="fas fa-power-off"></i>
+                                    <span>Log out</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+        } else if (localStorageAdmin != null) {
+            var dataUser = JSON.parse(localStorageAdmin)
+            listNameSplit = dataUser.name.split(' ')
+            elementCreate.innerHTML = `<i class="fas fa-sign-out-alt navbar__icon"></i>
+                <div class="board-user">
+                    <div class="board-user1">
+                    <div class="board-user__item board__icon-user">
+                                <img src="./../assets/img/avatar1.jpg" class="img-user">
+                            </div>
+                            <div class="board-user__item">
+                                <div class="item-user">${listNameSplit[listNameSplit.length - 1]}</div>
+                                <a href="http://127.0.0.1:5500/layout/editprofile.html" class="view-profile"><div class="item-user view-profile">View profile</div><a/>
+                                <div class="item-user log-out">
+                                    <i class="fas fa-power-off"></i>
+                                    <span>Log out</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+        } else {
+            elementCreate.innerHTML = `<i class="fas fa-user navbar__icon"></i>`
+        }
+
+        if ($('.log-out') != null) {
+            $('.log-out').onclick = () => {
+                if (localStorageData != null || localStorageAdmin != null) {
+                    elementCreate.innerHTML = `<i class="fas fa-user navbar__icon"></i>`
+                    //xóa local storage
+                    localStorage.removeItem('dataUser')
+                    localStorage.removeItem('admin')
+
+                    //trả các giá trị biến về null sau khi xóa local storage
+                    dataUser = null;
+                    localStorageData = null
+                    localStorageAdmin = null
+                }
+            }
+        }
+        function swithcSeatch() {
+            if ($('.search-group').style.display == 'block') {
+                $('.navbar-icon__search').innerHTML = `<i class="fas fa-search navbar__icon"></i>`
+                $('.search-group').style.display = 'none'
+            } else {
+                $('.search-group').style.display = 'block'
+                $('.navbar-icon__search').innerHTML = `<i class="fas fa-times navbar__icon"></i>`
+            }
+
+        }
+
+        function searchArticle() {
+            var inputSearch = $('#search').value
+            if (inputSearch != '') {
+                localStorage.setItem('valueSearch', inputSearch)
+                location.href = 'http://127.0.0.1:5500/layout/search.html'
+            }
+        }
+
+
+        var inputSearch = $('#search')
+        inputSearch.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                $('.btn-search').click();
+            }
+        })
+
+
+        function hideShowBoardUser() {
+
+            if ($('.board-user') != null) {
+                if ($('.board-user').style.display == 'block') {
+                    $('.board-user').style.display = 'none'
+                } else {
+                    $('.board-user').style.display = 'block'
+                }
+            } else {
+                localStorage.setItem('currentLink', location.href)
+                location.href = 'http://127.0.0.1:5500/layout/login.html'
+            }
+        }
+
+        var listCategory = fetch('http://www.sports.somee.com/api/Category')
+            .then(res => res.json())
+            .then(data => {
+                var i = 0
+                var listCategoryElement = data.map(value => {
+                    i++
+                    if (i <= 5) {
+                        return `<a href="" class="item-link">
+                        <li class="navbar-list__item">${value.name_category}</li>
+                    </a>`
+                    } else {
+
+                    }
+                })
+
+                //khai báo 2 biến là 2 mảng cần render ra html
+                //5 danh mục đầu tiên hiện thẳng ra ngoài các danh mục còn lại hiển thị trong các môn thể thao khác
+                var listSmaller = []
+                var listLarger = []
+                for (let i = 0; i < data.length; i++) {
+                    if (i < 5) {
+                        listSmaller.push(`<a href="http://127.0.0.1:5500/layout/category.html?id_category=${data[i].id_category}" class="item-link"><li class="navbar-list__item">${data[i].name_category}</li></a>`)
+                    }
+                    else {
+                        listLarger.push(`<a class="order-category__link" href="http://127.0.0.1:5500/layout/category.html?id_category=${data[i].id_category}"><li class="order-category__item">${data[i].name_category}</li></a>`)
+                    }
+                }
+
+                $('.navbar-list').innerHTML = listSmaller.join('')
+                if (listLarger != null) {
+                    var orderSport = document.createElement('li')
+                    orderSport.classList.add('navbar-list__item')
+                    orderSport.classList.add('order-category')
+                    orderSport.addEventListener('click', displayOtherCategory)
+                    orderSport.innerHTML = 'Môn thể thao khác'
+
+                    var list_orderSports = document.createElement('ul')
+                    list_orderSports.classList.add('list__order-category')
+
+
+                    list_orderSports.innerHTML = listLarger.join('')
+                    orderSport.append(list_orderSports)
+
+                    $('.navbar-list').append(orderSport)
+                }
+                function displayOtherCategory() {
+                    if ($('.list__order-category').style.display == 'block') {
+                        $('.list__order-category').style.display = 'none'
+                    } else {
+                        $('.list__order-category').style.display = 'block'
+                    }
+                }
+            })
+
+
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</body>
+
+</html>

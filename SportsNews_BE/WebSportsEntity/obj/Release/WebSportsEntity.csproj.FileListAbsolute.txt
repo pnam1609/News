@@ -1,0 +1,12 @@
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\WebSportsEntity.dll.config
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\WebSportsEntity.dll
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\WebSportsEntity.pdb
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\EntityFramework.dll
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\EntityFramework.xml
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\obj\Release\WebSportsEntity.csprojAssemblyReference.cache
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\obj\Release\WebSportsEntity.csproj.CoreCompileInputs.cache
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\obj\Release\WebSportsEntity.csproj.CopyComplete
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\obj\Release\WebSportsEntity.dll
+C:\Users\NAM\source\repos\SportsNews\WebSportsEntity\obj\Release\WebSportsEntity.pdb

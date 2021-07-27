@@ -1,0 +1,117 @@
+.container{
+    width: 100%;
+    height: 1000px;
+    display: flex;
+    padding: 20px;
+    margin-top: 80px;
+}
+
+.user{
+    flex: 0.3125;
+    margin-right: 20px;
+    padding: 15px;
+    
+
+    width: 100%;
+}
+
+.user-item{
+    flex: 1;
+    padding: 15px;
+
+    width: 100%;
+}
+
+.icon-user{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    padding: 0px 25px;  
+    margin: 30px 0px;
+}
+
+.img__icon-user{
+    max-width: 200px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    border-radius: 50%;
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+    margin: auto;
+}
+
+.name-user{
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  html {
+    color: #333;
+    font-size: 62.5%;
+    font-family: "Open Sans", sans-serif;
+  }
+  .main {
+    background: #f1f1f1;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  .form {
+    width: 360px;
+    min-height: 100px;
+    padding: 32px 24px;
+    text-align: center;
+    background: #fff;
+    border-radius: 2px;
+    margin: 24px;
+    align-self: center;
+    box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
+  }
+  .form .heading {
+    font-size: 2rem;
+  }
+  .form .desc {
+    text-align: center;
+    color: #636d77;
+    font-size: 1.6rem;
+    font-weight: lighter;
+    line-height: 2.4rem;
+    margin-top: 16px;
+    font-weight: 300;
+  }
+
+  .icon-home{
+      margin: auto;
+      font-size: 4rem;
+      margin-bottom: 10px;
+  }
+  
+.header-edit-profile{
+  width: 100%;
+  height: 80px;
+  padding: 28px;
+  font-size: 2.4rem;
+  display: flex;
+}
+
+.mr-15{
+  margin-right: 8px;
+}
+
+.title-edit-profile{
+  flex: 1;
+  text-align: center;
+}
+
+.back-edit-profile:hover{
+  cursor: pointer;
+  opacity: 0.8;
+}
